@@ -1,0 +1,7 @@
+"toolchain hello world"
+module(name = "cortecs", version = "2024.12.01")
+
+bazel_dep(name = "platforms", version = "0.0.10")
+register_toolchains(
+    "//toolchain:cc_toolchain_for_linux_x86_64",
+)
