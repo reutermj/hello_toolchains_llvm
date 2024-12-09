@@ -1,7 +1,17 @@
 "toolchain hello world"
 module(name = "cortecs", version = "2024.12.01")
 
-bazel_dep(name = "platforms", version = "0.0.10")
-register_toolchains(
-    "//toolchain:cc_toolchain_for_linux_x86_64",
+bazel_dep(name = "toolchains_llvm", version = "0.0.0")
+
+git_override(
+    module_name = "toolchains_llvm",
+    remote = "https://github.com/reutermj/toolchains_llvm.git",
+    commit = "51c74164c90134915939414cbbec45adc28ea718",
 )
+
+llvm = use_extension("@toolchains_llvm//toolchain/extensions:llvm.bzl", "llvm")
+llvm.toolchain(
+    llvm_version = "19.1.0",
+)
+use_repo(llvm, "llvm_toolchain")
+register_toolchains("@llvm_toolchain//:all")
